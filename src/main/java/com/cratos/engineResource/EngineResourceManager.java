@@ -3,21 +3,22 @@ package com.cratos.engineResource;
 import com.cratos.Cratos;
 import com.cratos.engineSystem.Debug;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
 public class EngineResourceManager
 {
     private static List<Shader> m_EngineShaders;
     private static HashMap<String, Integer> m_Textures;
-    public static String EngineResourcesPath = "src/main/engineResources/";
+    //public static String EngineResourcesPath = "src/main/engineResources/";
     public static void InitEngineResources()
     {
         m_EngineShaders = new ArrayList<Shader>();
         m_Textures = new HashMap<String, Integer>();
-        AddShader("SPRITE", EngineResourcesPath+"/shaders/SpriteVs.glsl", EngineResourcesPath+"/shaders/SpriteFs.glsl");
+
+        AddShader("SPRITE", "/shaders/SpriteVs.glsl", "/shaders/SpriteFs.glsl");
 
         Cratos.CratosDebug.Log("Engine Resources Initialized!");
     }
@@ -34,7 +35,10 @@ public class EngineResourceManager
     }
     public static void AddShader(String name, String vertexPath, String fragmentPath)
     {
-        m_EngineShaders.add(new Shader(name, vertexPath, fragmentPath));
+        InputStream Vertex = EngineResourceManager.class.getResourceAsStream(vertexPath);
+        InputStream Fragment = EngineResourceManager.class.getResourceAsStream(fragmentPath);
+
+        m_EngineShaders.add(new Shader(name, Vertex, Fragment));
     }
     public static void AddTexture(String name, String path)
     {

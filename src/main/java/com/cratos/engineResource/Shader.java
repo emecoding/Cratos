@@ -1,21 +1,24 @@
 package com.cratos.engineResource;
 
+import com.cratos.Cratos;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 import org.lwjgl.system.MemoryStack;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.FloatBuffer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Scanner;
 
 import static org.lwjgl.opengl.GL20.*;
 
 public class Shader extends EngineResource
 {
     private int programId;
-    public Shader(String name, String vertex_path, String fragment_path)
+    public Shader(String name, InputStream vertex_path, InputStream fragment_path)
     {
         super(name);
 
@@ -71,18 +74,18 @@ public class Shader extends EngineResource
         }
 
     }
-    private String GetShaderFileData(String path) throws IOException
+    private String GetShaderFileData(InputStream stream) throws IOException
     {
-        try
+        String data = "";
+        Scanner sc = new Scanner(stream);
+
+        while(sc.hasNextLine())
         {
-            return new String(Files.readAllBytes(Paths.get(path)));
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
+            String d = sc.nextLine() + "\n";
+            data += d;
         }
 
-        return null;
+        return data;
     }
     public void Use() { glUseProgram(programId); }
     public static void UnbindEveryShader() { glUseProgram(0); }
