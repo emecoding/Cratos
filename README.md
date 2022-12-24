@@ -6,6 +6,13 @@ Tutorials coming later!
 
 Example application with Cratos:
 
+    import com.cratos.Cratos;
+    import com.cratos.engineResource.Scene;
+    import com.cratos.engineSystem.SceneManager;
+    import com.cratos.entity.Entity;
+    import com.cratos.entity.component.Camera;
+    import com.cratos.window.Window;
+    
     public class Game
     {
         public static void main(String[] args)
