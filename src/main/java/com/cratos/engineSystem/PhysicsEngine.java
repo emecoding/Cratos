@@ -36,9 +36,10 @@ public class PhysicsEngine extends EngineSystem
     }
     protected void SimulateRigidbody(Rigidbody rb)
     {
-        //rb.Velocity.y += this.CalculateAccelerationForRigidbody(rb);
+        rb.Velocity.y += this.CalculateAccelerationForRigidbody(rb);
         //CALCULATE PHYSICS
-        Collider MyCollider = (Collider) rb.ParentEntity.GetComponent(Collider.class);
+        /*Collider MyCollider = (Collider) rb.ParentEntity.GetComponent(Collider.class);
+        BUILTIN PHYSICS ENGINE IS UNDER CONSTRUCTION!
         if(MyCollider != null)
         {
             Vector2f MyPos = rb.ParentEntity.GetPositionVec2();
@@ -58,9 +59,10 @@ public class PhysicsEngine extends EngineSystem
                 if(MyPos.x+rb.Velocity.x > other.Left)
                     rb.Velocity.x = 0;
                 if(MyPos.x-rb.Velocity.x < other.Right)
-                    rb.Velocity.x = 0;*/
+                    rb.Velocity.x = 0;
             }
         }
+        */
         //APPLY VELOCITY
         Vector2f OldPos = rb.ParentEntity.GetPositionVec2();
         rb.ParentEntity.SetX(OldPos.x + rb.Velocity.x);
