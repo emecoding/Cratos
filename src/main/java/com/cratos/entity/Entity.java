@@ -106,7 +106,18 @@ public class Entity
     }
     public void SetWidth(float w) { this.Size.x = w; }
     public void SetHeight(float h) { this.Size.y = h; }
-
+    public void SetRotation(float rot)
+    {
+        this.Rotation = rot;
+    }
+    public void IncreaseRotation(float a)
+    {
+        this.Rotation += a;
+    }
+    public void DecreaseRotation(float a)
+    {
+        this.Rotation -= a;
+    }
     public void Destroy()
     {
         for(int i = 0; i < this.Components.size(); i++)

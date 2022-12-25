@@ -1,7 +1,6 @@
 package com.example;
 
 import com.cratos.Cratos;
-import com.cratos.engineResource.EngineResourceManager;
 import com.cratos.engineResource.Scene;
 import com.cratos.engineSystem.SceneManager;
 import com.cratos.entity.Entity;
@@ -9,6 +8,9 @@ import com.cratos.entity.component.Camera;
 import com.cratos.entity.component.Rigidbody;
 import com.cratos.entity.component.Sprite;
 import com.cratos.window.Window;
+
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_UP;
+
 
 /*
 
@@ -50,6 +52,7 @@ Window window = Cratos.CreateWindow(1280, 720, "Game");
 
 
  */
+
 
 public class Game
 {

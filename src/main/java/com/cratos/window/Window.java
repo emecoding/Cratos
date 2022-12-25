@@ -99,6 +99,5 @@ public class Window
         this.SkyboxColor[2] = b/255;
         this.SkyboxColor[3] = a/255;
     }
-
-    public boolean KeyPressed(int key) {return glfwGetKey(this.m_Window, key) == GLFW_PRESS;}
+    public long GetWindowID() { return m_Window; }
 }

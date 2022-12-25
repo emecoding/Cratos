@@ -2,10 +2,7 @@ package com.cratos;
 
 import com.cratos.engineResource.EngineResourceManager;
 import com.cratos.engineResource.Scene;
-import com.cratos.engineSystem.Debug;
-import com.cratos.engineSystem.PhysicsEngine;
-import com.cratos.engineSystem.Renderer;
-import com.cratos.engineSystem.SceneManager;
+import com.cratos.engineSystem.*;
 import com.cratos.engineUtils.EngineUtils;
 import com.cratos.entity.Entity;
 import com.cratos.entity.component.Component;
@@ -23,6 +20,7 @@ public class Cratos
     public static SceneManager CratosSceneManager = null;
     public static Renderer CratosRenderer = null;
     public static PhysicsEngine CratosPhysicsEngine = null;
+    public static InputManager CratosInputManager = null;
     public static Window CreateWindow(int width, int height, String title)
     {
         m_Window = new Window(width, height, title);
@@ -64,6 +62,18 @@ public class Cratos
         CratosPhysicsEngine.Initialize();
         return CratosPhysicsEngine;
     }
+    public static InputManager CreateInputManager()
+    {
+        CratosInputManager = new InputManager();
+        CratosInputManager.Initialize();
+        return CratosInputManager;
+    }
+    public static InputManager CreateInputManager(InputManager manager)
+    {
+        CratosInputManager = manager;
+        CratosInputManager.Initialize();
+        return manager;
+    }
     public static void CreateDebug()
     {
         CratosDebug = new Debug();
@@ -101,7 +111,7 @@ public class Cratos
         while(!m_Window.ShouldClose())
         {
             m_Window.Clear();
-            CratosPhysicsEngine.Simulate();
+            if(CratosPhysicsEngine != null) CratosPhysicsEngine.Simulate();
             CratosRenderer.RenderCurrentScene();
             Cratos.Update();
             m_Window.SwapBuffersAndPollEvents();
@@ -112,6 +122,9 @@ public class Cratos
         if(CratosDebug == null)
             CreateDebug();
         CratosDebug.Initialize();
+
+        if(CratosInputManager == null)
+            CreateInputManager();
 
         if(m_Window != null) m_Window.Init();
         else CratosDebug.Warning("No Current Context Found!");
@@ -125,7 +138,9 @@ public class Cratos
         CratosDebug.Log("Terminating...");
         CratosSceneManager.Destroy();
         CratosRenderer.Destroy();
+        if(CratosPhysicsEngine != null) CratosPhysicsEngine.Destroy();
         if(m_Window != null) m_Window.DestroyWindow();
+        CratosInputManager.Destroy();
         CratosDebug.Destroy();
         glfwTerminate();
     }
