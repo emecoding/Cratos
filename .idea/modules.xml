@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Cratos.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Cratos.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/src/main/Game/Game.iml" filepath="$PROJECT_DIR$/src/main/Game/Game.iml" />
     </modules>
   </component>
 </project>

@@ -12,13 +12,16 @@ public class EngineResourceManager
 {
     private static List<Shader> m_EngineShaders;
     private static HashMap<String, Integer> m_Textures;
-    //public static String EngineResourcesPath = "src/main/engineResources/";
+    public static String EngineResourcesPath = "src/main/resources/";
     public static void InitEngineResources()
     {
         m_EngineShaders = new ArrayList<Shader>();
         m_Textures = new HashMap<String, Integer>();
 
         AddShader("SPRITE", "/shaders/SpriteVs.glsl", "/shaders/SpriteFs.glsl");
+
+        AddTexture("PUMPKIN", "/sprites/pumpkin.png");
+        AddTexture("TOILET", "/sprites/toilet.png");
 
         Cratos.CratosDebug.Log("Engine Resources Initialized!");
     }
@@ -42,6 +45,7 @@ public class EngineResourceManager
     }
     public static void AddTexture(String name, String path)
     {
+        //Cratos.CratosDebug.Log(TextureLoader.class.getResource(path).getPath());
         m_Textures.put(name, TextureLoader.LoadTexture(path));
     }
     public static int GetTexture(String name)
