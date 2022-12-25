@@ -1,10 +1,6 @@
 package com.cratos.engineResource;
 
 import com.cratos.Cratos;
-import com.cratos.engineSystem.Debug;
-
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
@@ -45,7 +41,6 @@ public class EngineResourceManager
     }
     public static void AddTexture(String name, String path)
     {
-        //Cratos.CratosDebug.Log(TextureLoader.class.getResource(path).getPath());
         m_Textures.put(name, TextureLoader.LoadTexture(path));
     }
     public static int GetTexture(String name)

@@ -176,7 +176,7 @@ public class TextureLoader
     {
         try
         {
-            PNGDecoder decoder = new PNGDecoder(TextureLoader.class.getResourceAsStream(path));
+            PNGDecoder decoder = new PNGDecoder(EngineResourceManager.class.getResourceAsStream(path));
             ByteBuffer Buffer = ByteBuffer.allocateDirect(4 * decoder.getWidth() * decoder.getHeight());
             decoder.decode(Buffer, decoder.getWidth()*4, PNGDecoder.Format.RGBA);
             Buffer.flip();
@@ -201,7 +201,7 @@ public class TextureLoader
         }
         catch (Exception e)
         {
-            Cratos.CratosDebug.Error(e.getMessage());
+            e.printStackTrace();
         }
 
         return -1;
