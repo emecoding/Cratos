@@ -21,6 +21,7 @@ public class Cratos
     public static Renderer CratosRenderer = null;
     public static PhysicsEngine CratosPhysicsEngine = null;
     public static InputManager CratosInputManager = null;
+    public static Cursor CratosCursor = null;
     public static Window CreateWindow(int width, int height, String title)
     {
         m_Window = new Window(width, height, title);
@@ -74,6 +75,18 @@ public class Cratos
         CratosInputManager.Initialize();
         return manager;
     }
+    public static Cursor CreateCursor()
+    {
+        CratosCursor = new Cursor();
+        CratosCursor.Initialize();
+        return CratosCursor;
+    }
+    public static Cursor CreateCursor(Cursor cursor)
+    {
+        CratosCursor = cursor;
+        CratosCursor.Initialize();
+        return CratosCursor;
+    }
     public static void CreateDebug()
     {
         CratosDebug = new Debug();
@@ -111,6 +124,7 @@ public class Cratos
         while(!m_Window.ShouldClose())
         {
             m_Window.Clear();
+            CratosCursor.Update();
             if(CratosPhysicsEngine != null) CratosPhysicsEngine.Simulate();
             CratosRenderer.RenderCurrentScene();
             Cratos.Update();
@@ -123,11 +137,14 @@ public class Cratos
             CreateDebug();
         CratosDebug.Initialize();
 
+        if(m_Window != null) m_Window.Init();
+        else CratosDebug.Warning("No Current Context Found!");
+
         if(CratosInputManager == null)
             CreateInputManager();
 
-        if(m_Window != null) m_Window.Init();
-        else CratosDebug.Warning("No Current Context Found!");
+        if(CratosCursor == null)
+            CreateCursor();
 
         EngineResourceManager.InitEngineResources();
 

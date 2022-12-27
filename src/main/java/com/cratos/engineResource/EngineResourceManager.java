@@ -1,6 +1,8 @@
 package com.cratos.engineResource;
 
 import com.cratos.Cratos;
+import org.lwjgl.opengl.GL11;
+
 import java.io.InputStream;
 import java.util.*;
 
@@ -44,9 +46,11 @@ public class EngineResourceManager
     {
         m_Textures.put(name, TextureLoader.LoadTexture(path));
     }
-    public static void AddSpriteSheet(String name, String path, int SpriteWidth, int SpriteHeight)
+    public static SpriteSheet AddSpriteSheet(String name, String path, int SpriteWidth, int SpriteHeight)
     {
-        m_SpriteSheets.add(new SpriteSheet(name, path, SpriteWidth, SpriteHeight));
+        SpriteSheet s = new SpriteSheet(name, path, SpriteWidth, SpriteHeight);
+        m_SpriteSheets.add(s);
+        return s;
     }
     public static int GetTextureFromSpriteSheet(String name, int x, int y)
     {

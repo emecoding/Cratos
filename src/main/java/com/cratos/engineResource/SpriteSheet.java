@@ -41,7 +41,6 @@ public class SpriteSheet extends EngineResource
         try
         {
             File file = new File(SpriteSheet.class.getResource(this.PATH).getPath());
-            Cratos.CratosDebug.Log(file.getAbsolutePath());
             BufferedImage I = ImageIO.read(file);
             this.TexWidth = I.getWidth();
             this.TexHeight = I.getHeight();
