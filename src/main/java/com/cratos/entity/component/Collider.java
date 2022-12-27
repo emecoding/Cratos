@@ -1,5 +1,6 @@
 package com.cratos.entity.component;
 
+import com.cratos.entity.Entity;
 import org.joml.Vector2f;
 
 public class Collider extends Component
@@ -12,25 +13,21 @@ public class Collider extends Component
         this.Size = new Vector2f(0.0f, 0.0f);
         this.UpdateBounds();
     }
-
     @Override
     public void Start()
     {
 
     }
-
     @Override
     public void Update()
     {
         this.UpdateBounds();
     }
-
     @Override
     public void Destroy()
     {
 
     }
-
     private void UpdateBounds()
     {
         Vector2f Pos = this.ParentEntity.GetPositionVec2();
@@ -54,5 +51,35 @@ public class Collider extends Component
 
         return false;
 
+    }
+    public boolean Collides(Entity other)
+    {
+        Vector2f pos = this.ParentEntity.GetPositionVec2();
+        Vector2f size = this.ParentEntity.GetSize();
+        Vector2f otherPos = other.GetPositionVec2();
+        Vector2f otherSize = other.GetSize();
+        if(pos.x < otherPos.x + otherSize.x &&
+            pos.x + size.x > otherPos.x &&
+            pos.y < otherPos.y + otherSize.y &&
+            pos.y + size.y > otherPos.y)
+        {
+            return true;
+        }
+
+        return false;
+    }
+    public boolean Collides(float x, float y, float w, float h)
+    {
+        Vector2f pos = this.ParentEntity.GetPositionVec2();
+        Vector2f size = this.ParentEntity.GetSize();
+        if(pos.x < x + w &&
+                pos.x + size.x > x &&
+                pos.y < y + h &&
+                pos.y + size.y > y)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

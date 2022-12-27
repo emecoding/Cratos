@@ -61,6 +61,15 @@ public class Scene extends EngineResource
         return e;
     }
     public int GetAmountOfEntities() {return this.ENTITIES.size();}
+    public void RemoveEntity(Entity entity)
+    {
+        if(this.ENTITIES.contains(entity))
+        {
+            this.ENTITIES.remove(entity);
+            entity.Destroy();
+        }
+
+    }
     @Override
     public void Destroy()
     {

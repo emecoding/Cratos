@@ -12,6 +12,7 @@ public class Sprite extends Component
     public void Initialize()
     {
         this.UseInUpdate = false;
+        this.Color = Sprite.ConvertColorToGLSL(255.0f, 255.0f, 255.0f, 255.0f);
     }
     @Override
     public void Start()
