@@ -124,7 +124,7 @@ public class Renderer extends EngineSystem
         if(Cratos.CratosCursor.GetCurrentTexture() != -1)
         {
             TextureLoader.UseTexture(Cratos.CratosCursor.GetCurrentTexture());
-            this.SpriteShader.UploadVec4("Color", Sprite.ConvertColorToGLSL(255.0f, 255.0f, 255.0f, 255.0f));
+            this.SpriteShader.UploadVec4("Color", Cratos.CratosCursor.GetColor());
             this.SpriteShader.UploadMat4("Transform", Cratos.CratosCursor.GetCursorTransform());
             glDrawArrays(GL_TRIANGLES, 0, 6);
             TextureLoader.UnbindEveryTexture();

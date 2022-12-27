@@ -24,5 +24,12 @@ public class Transformations
         return new Vector2f(MyPos.x, MyPos.y).add(Dir.mul(Speed));
     }
 
+    public static Vector2f MoveAroundPoint(Vector2f MyPos, Vector2f Center, float theta)
+    {
+        float x = Math.cos(theta) * (MyPos.x - Center.x) - Math.sin(theta) * (MyPos.y - Center.y) + Center.x;
+        float y = Math.sin(theta) * (MyPos.x - Center.x) + Math.cos(theta) * (MyPos.y - Center.y) + Center.y;
+        return new Vector2f(x, y);
+    }
+
 
 }

@@ -1,9 +1,11 @@
 package com.cratos.engineSystem;
 
 import com.cratos.Cratos;
+import com.cratos.entity.component.Sprite;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -16,9 +18,11 @@ public class Cursor extends EngineSystem
     private int CurrentTexture = -1;
     private int Width;
     private int Height;
+    private Vector4f Color;
     @Override
     public void Initialize()
     {
+        this.Color = Sprite.ConvertColorToGLSL(255.0f, 255.0f, 255.0f, 255.0f);
         this.SetMode(GLFW_CURSOR_NORMAL);
     }
     public void SetDefaultTexture(int tex) { this.DefaultTexture = tex; }
@@ -38,6 +42,7 @@ public class Cursor extends EngineSystem
         this.Width = w;
         this.Height = h;
     }
+    public void SetColor(Vector4f color) { this.Color = color; }
     public void SetMode(int mode)
     {
         this.Mode = mode;
@@ -52,6 +57,7 @@ public class Cursor extends EngineSystem
         transform.scale(new Vector3f(this.Width, this.Height, 1.0f));
         return transform;
     }
+    public Vector4f GetColor() { return this.Color; }
     @Override
     public void Destroy()
     {

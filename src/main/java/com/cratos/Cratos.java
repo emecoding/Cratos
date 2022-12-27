@@ -1,7 +1,6 @@
 package com.cratos;
 
 import com.cratos.engineResource.EngineResourceManager;
-import com.cratos.engineResource.Scene;
 import com.cratos.engineSystem.*;
 import com.cratos.engineUtils.EngineUtils;
 import com.cratos.entity.Entity;
@@ -87,11 +86,18 @@ public class Cratos
         CratosCursor.Initialize();
         return CratosCursor;
     }
-    public static void CreateDebug()
+    public static Debug CreateDebug()
     {
         CratosDebug = new Debug();
+        CratosDebug.Initialize();
+        return CratosDebug;
     }
-    public static void CreateDebug(Debug debug) { CratosDebug = debug; }
+    public static Debug CreateDebug(Debug debug)
+    {
+        CratosDebug = debug;
+        CratosDebug.Initialize();
+        return CratosDebug;
+    }
     public static void Update()
     {
         EngineUtils.UpdateTime();
@@ -137,7 +143,7 @@ public class Cratos
             CreateDebug();
         CratosDebug.Initialize();
 
-        if(m_Window != null) m_Window.Init();
+        if(m_Window == null) CreateWindow(400, 400, "Cratos");
         else CratosDebug.Warning("No Current Context Found!");
 
         if(CratosInputManager == null)
@@ -145,6 +151,9 @@ public class Cratos
 
         if(CratosCursor == null)
             CreateCursor();
+
+        if(CratosRenderer == null)
+            CreateRenderer();
 
         EngineResourceManager.InitEngineResources();
 
