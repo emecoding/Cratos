@@ -1,6 +1,7 @@
 package com.example;
 
 import com.cratos.Cratos;
+import com.cratos.engineResource.EngineResourceManager;
 import com.cratos.engineResource.Scene;
 import com.cratos.engineSystem.SceneManager;
 import com.cratos.entity.Entity;
@@ -60,6 +61,8 @@ public class Game
     {
         Window window = Cratos.CreateWindow(1280, 720, "Game");
         Cratos.InitializeCratos();
+
+        EngineResourceManager.AddSpriteSheet("CURSOR", "/sprites/cursor.png", 32, 32);
 
         SceneManager sceneManager = Cratos.CreateSceneManager();
 

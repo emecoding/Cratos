@@ -13,9 +13,16 @@ public class Transformations
         return angle;
     }
 
+    public static float Distance(Vector2f a, Vector2f b)
+    {
+        return a.distance(b);
+    }
+
     public static Vector2f MoveTowardsPoint(Vector2f MyPos, Vector2f Point, float Speed)
     {
         Vector2f Dir = new Vector2f(Point.x-MyPos.x, Point.y-MyPos.y);
         return new Vector2f(MyPos.x, MyPos.y).add(Dir.mul(Speed));
     }
+
+
 }
