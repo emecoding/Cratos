@@ -99,45 +99,6 @@ public class Cratos
         CratosDebug.Initialize();
         return CratosDebug;
     }
-    public static void Update()
-    {
-        EngineUtils.UpdateTime();
-        List<Entity> Entities = CratosSceneManager.GetCurrentScene().GetEveryEntity();
-        for(int i = 0; i < Entities.size(); i++)
-        {
-            List<Component> comps = Entities.get(i).GetEveryComponent();
-            for(int j = 0; j < comps.size(); j++)
-            {
-                if(comps.get(j).UseInUpdate)
-                    comps.get(j).Update();
-            }
-        }
-    }
-    public static void Start()
-    {
-        List<Entity> Entities = CratosSceneManager.GetCurrentScene().GetEveryEntity();
-        for(int i = 0; i < Entities.size(); i++)
-        {
-            List<Component> comps = Entities.get(i).GetEveryComponent();
-            for(int j = 0; j < comps.size(); j++)
-            {
-                comps.get(j).Start();
-            }
-        }
-    }
-    public static void Run()
-    {
-        StartEngine();
-        while(!m_Window.ShouldClose())
-        {
-            m_Window.Clear();
-            CratosCursor.Update();
-            if(CratosPhysicsEngine != null) CratosPhysicsEngine.Simulate();
-            CratosRenderer.RenderCurrentScene();
-            Cratos.Update();
-            m_Window.SwapBuffersAndPollEvents();
-        }
-    }
     public static void InitializeCratos()
     {
         if(CratosDebug == null)
@@ -165,7 +126,18 @@ public class Cratos
 
         CratosDebug.Log("Cratos Initialized Successfully!");
     }
-
+    public static void CallStarts()
+    {
+        List<Entity> Entities = CratosSceneManager.GetCurrentScene().GetEveryEntity();
+        for(int i = 0; i < Entities.size(); i++)
+        {
+            List<Component> comps = Entities.get(i).GetEveryComponent();
+            for(int j = 0; j < comps.size(); j++)
+            {
+                comps.get(j).Start();
+            }
+        }
+    }
     public static void StartEngine()
     {
         CratosDebug.Start();
@@ -174,6 +146,34 @@ public class Cratos
         CratosCursor.Start();
         CratosPhysicsEngine.Start();
         CratosRenderer.Start();
+        CallStarts();
+    }
+    public static void Run()
+    {
+        StartEngine();
+        while(!m_Window.ShouldClose())
+        {
+            m_Window.Clear();
+            CratosCursor.Update();
+            if(CratosPhysicsEngine != null) CratosPhysicsEngine.Simulate();
+            CratosRenderer.RenderCurrentScene();
+            Cratos.Update();
+            m_Window.SwapBuffersAndPollEvents();
+        }
+    }
+    public static void Update()
+    {
+        EngineUtils.UpdateTime();
+        List<Entity> Entities = CratosSceneManager.GetCurrentScene().GetEveryEntity();
+        for(int i = 0; i < Entities.size(); i++)
+        {
+            List<Component> comps = Entities.get(i).GetEveryComponent();
+            for(int j = 0; j < comps.size(); j++)
+            {
+                if(comps.get(j).UseInUpdate)
+                    comps.get(j).Update();
+            }
+        }
     }
     public static void Terminate()
     {

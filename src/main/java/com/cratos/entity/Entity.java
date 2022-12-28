@@ -1,5 +1,6 @@
 package com.cratos.entity;
 
+import com.cratos.Cratos;
 import com.cratos.entity.component.Component;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -19,34 +20,40 @@ public class Entity
     {
         this.Position = new Vector3f(0.0f, 0.0f, 0.0f);
         this.Size = new Vector2f(32.0f, 32.0f);
+        this.Name = "Entity(" + Cratos.CratosSceneManager.GetCurrentScene().GetAmountOfEntities() + ")";
     }
     public Entity(Vector3f Position, Vector2f Size, float Rotation)
     {
         this.Position = Position;
         this.Size = Size;
         this.Rotation = Rotation;
+        this.Name = "Entity(" + Cratos.CratosSceneManager.GetCurrentScene().GetAmountOfEntities() + ")";
     }
     public Entity(Vector2f Position, Vector2f Size, float Rotation)
     {
         this.Position = new Vector3f(Position.x, Position.y, 0.0f);
         this.Size = Size;
         this.Rotation = Rotation;
+        this.Name = "Entity(" + Cratos.CratosSceneManager.GetCurrentScene().GetAmountOfEntities() + ")";
     }
     public Entity(Vector2f Position)
     {
         this.Position = new Vector3f(Position.x, Position.y, 0.0f);
         this.Size = new Vector2f(32.0f, 32.0f);
+        this.Name = "Entity(" + Cratos.CratosSceneManager.GetCurrentScene().GetAmountOfEntities() + ")";
     }
     public Entity(Vector3f Position)
     {
         this.Position = Position;
         this.Size = new Vector2f(32.0f, 32.0f);
+        this.Name = "Entity(" + Cratos.CratosSceneManager.GetCurrentScene().GetAmountOfEntities() + ")";
     }
     public Entity(float Rotation)
     {
         this.Position = new Vector3f(0.0f, 0.0f, 0.0f);
         this.Size = new Vector2f(32.0f, 32.0f);
         this.Rotation = Rotation;
+        this.Name = "Entity(" + Cratos.CratosSceneManager.GetCurrentScene().GetAmountOfEntities() + ")";
     }
     public Component AddComponent(Component comp)
     {

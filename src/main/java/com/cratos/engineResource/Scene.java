@@ -1,5 +1,6 @@
 package com.cratos.engineResource;
 
+import com.cratos.Cratos;
 import com.cratos.entity.Entity;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -60,6 +61,11 @@ public class Scene extends EngineResource
         this.ENTITIES.add(e);
         return e;
     }
+    public Entity AddEntity(Entity e)
+    {
+        this.ENTITIES.add(e);
+        return e;
+    }
     public int GetAmountOfEntities() {return this.ENTITIES.size();}
     public void RemoveEntity(Entity entity)
     {
@@ -69,6 +75,17 @@ public class Scene extends EngineResource
             entity.Destroy();
         }
 
+    }
+    public Entity GetEntity(String name)
+    {
+        for(int i = 0; i < this.ENTITIES.size(); i++)
+        {
+            if(this.ENTITIES.get(i).Name.equals(name))
+                return this.ENTITIES.get(i);
+        }
+
+        Cratos.CratosDebug.Error("No entity found called " + name);
+        return null;
     }
     @Override
     public void Destroy()

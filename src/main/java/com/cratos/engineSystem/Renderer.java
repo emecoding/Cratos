@@ -120,15 +120,6 @@ public class Renderer extends EngineSystem
         this.SpriteShader.UploadMat4("View", cam.View);
         glBindVertexArray(VAO);
 
-        if(Cratos.CratosCursor.GetCurrentTexture() != -1)
-        {
-            TextureLoader.UseTexture(Cratos.CratosCursor.GetCurrentTexture());
-            this.SpriteShader.UploadVec4("Color", Cratos.CratosCursor.GetColor());
-            this.SpriteShader.UploadMat4("Transform", Cratos.CratosCursor.GetCursorTransform());
-            glDrawArrays(GL_TRIANGLES, 0, 6);
-            TextureLoader.UnbindEveryTexture();
-        }
-
         for (Sprite sprite : this.SCENE_SPRITES)
         {
             if(!ShouldRender(sprite.ParentEntity))
@@ -155,6 +146,15 @@ public class Renderer extends EngineSystem
             glDrawArrays(GL_TRIANGLES, 0, 6);
             TextureLoader.UnbindEveryTexture();
 
+        }
+
+        if(Cratos.CratosCursor.GetCurrentTexture() != -1)
+        {
+            TextureLoader.UseTexture(Cratos.CratosCursor.GetCurrentTexture());
+            this.SpriteShader.UploadVec4("Color", Cratos.CratosCursor.GetColor());
+            this.SpriteShader.UploadMat4("Transform", Cratos.CratosCursor.GetCursorTransform());
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+            TextureLoader.UnbindEveryTexture();
         }
 
         glBindVertexArray(0);

@@ -45,9 +45,6 @@ public class SpriteSheet extends EngineResource
             this.TexWidth = I.getWidth();
             this.TexHeight = I.getHeight();
 
-            Cratos.CratosDebug.Log("WIDTH: " + this.TexWidth);
-            Cratos.CratosDebug.Log("HEIGHT: " + this.TexHeight);
-
             int X = 0;
             int Y = 0;
 
@@ -127,8 +124,6 @@ public class SpriteSheet extends EngineResource
         {
             e.printStackTrace();
         }
-
-        Cratos.CratosDebug.Log("PICS: " + this.SPRITES.size());
 
     }
     public int[] GetTexturesArray()
