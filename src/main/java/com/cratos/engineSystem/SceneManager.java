@@ -16,6 +16,13 @@ public class SceneManager extends EngineSystem
     {
         SCENES = new ArrayList<Scene>();
     }
+
+    @Override
+    public void Start()
+    {
+
+    }
+
     public Scene AddScene(String name)
     {
         Scene s = new Scene(name);

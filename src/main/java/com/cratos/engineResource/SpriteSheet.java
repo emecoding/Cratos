@@ -45,6 +45,9 @@ public class SpriteSheet extends EngineResource
             this.TexWidth = I.getWidth();
             this.TexHeight = I.getHeight();
 
+            Cratos.CratosDebug.Log("WIDTH: " + this.TexWidth);
+            Cratos.CratosDebug.Log("HEIGHT: " + this.TexHeight);
+
             int X = 0;
             int Y = 0;
 
@@ -125,7 +128,18 @@ public class SpriteSheet extends EngineResource
             e.printStackTrace();
         }
 
+        Cratos.CratosDebug.Log("PICS: " + this.SPRITES.size());
 
+    }
+    public int[] GetTexturesArray()
+    {
+        int[] arr = new int[this.SPRITES.size()];
+        for(int i = 0; i < this.SPRITES.size(); i++)
+        {
+            arr[i] = this.SPRITES.get(i)[2];
+        }
+
+        return arr;
     }
     public int GetTextureID(int x, int y)
     {

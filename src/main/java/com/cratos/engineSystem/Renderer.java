@@ -3,10 +3,12 @@ package com.cratos.engineSystem;
 import com.cratos.Cratos;
 import com.cratos.engineResource.EngineResourceManager;
 import com.cratos.engineResource.Shader;
+import com.cratos.engineResource.SpriteSheet;
 import com.cratos.engineResource.TextureLoader;
 import com.cratos.entity.Entity;
 import com.cratos.entity.component.Camera;
 import com.cratos.entity.component.Component;
+import com.cratos.entity.component.ParticleSystem;
 import com.cratos.entity.component.Sprite;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -30,13 +32,21 @@ public class Renderer extends EngineSystem
     protected int VAO;
     protected int VBO;
     protected int AMOUNT_OF_SPRITES_IN_SCENE = 0;
+    protected int AMOUNT_OF_PARTICLE_SYSTEMS_IN_SCENE = 0;
     protected List<Sprite> SCENE_SPRITES = null;
+    protected List<ParticleSystem> SCENE_PARTICLE_SYSTEMS = null;
     @Override
     public void Initialize()
     {
         this.SpriteShader = EngineResourceManager.GetShader("SPRITE");
         this.SCENE_SPRITES = new ArrayList<Sprite>();
+        this.SCENE_PARTICLE_SYSTEMS = new ArrayList<ParticleSystem>();
+    }
+    @Override
+    public void Start()
+    {
         this.AMOUNT_OF_SPRITES_IN_SCENE = Cratos.GetComponentsFromScene(Sprite.class).size();
+        this.AMOUNT_OF_PARTICLE_SYSTEMS_IN_SCENE = Cratos.GetComponentsFromScene(SpriteSheet.class).size();
         float vertices[] = new float[]{
                 // pos      // tex
                 0.0f, 1.0f, 0.0f, 1.0f,
@@ -74,7 +84,6 @@ public class Renderer extends EngineSystem
         {
             Cratos.CratosDebug.Error(e.getMessage());
         }
-
     }
     @Override
     public void Destroy()
@@ -102,17 +111,7 @@ public class Renderer extends EngineSystem
     }
     public void RenderCurrentScene()
     {
-        this.AMOUNT_OF_SPRITES_IN_SCENE = Cratos.GetComponentsFromScene(Sprite.class).size();
-        if(this.SCENE_SPRITES.size() != this.AMOUNT_OF_SPRITES_IN_SCENE)
-        {
-            this.SCENE_SPRITES.clear();
-            List<Component> comps = Cratos.GetComponentsFromScene(Sprite.class);
-            for(Component comp : comps)
-                this.SCENE_SPRITES.add((Sprite) comp);
-
-            this.SCENE_SPRITES = this.SortBasedOnRenderOrder();
-
-        }
+        this.GetEveryRenderComponent();
 
         Shader.UnbindEveryShader();
         Camera cam = (Camera)Objects.requireNonNull(Cratos.GetComponentFromScene(Camera.class));
@@ -142,8 +141,48 @@ public class Renderer extends EngineSystem
             TextureLoader.UnbindEveryTexture();
         }
 
+        for(ParticleSystem system : this.SCENE_PARTICLE_SYSTEMS)
+        {
+            if(!system.IsPlaying())
+                continue;
+
+            if(!ShouldRender(system.ParentEntity))
+                continue;
+
+            if(system.GetCurrentFrame() > -1) TextureLoader.UseTexture(system.GetCurrentFrame());
+            this.SpriteShader.UploadVec4("Color", system.GetColor());
+            this.SpriteShader.UploadMat4("Transform", system.GetParticleSystemTransform());
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+            TextureLoader.UnbindEveryTexture();
+
+        }
+
         glBindVertexArray(0);
         Shader.UnbindEveryShader();
+    }
+    private void GetEveryRenderComponent()
+    {
+        this.AMOUNT_OF_SPRITES_IN_SCENE = Cratos.GetComponentsFromScene(Sprite.class).size();
+        if(this.SCENE_SPRITES.size() != this.AMOUNT_OF_SPRITES_IN_SCENE)
+        {
+            this.SCENE_SPRITES.clear();
+            List<Component> comps = Cratos.GetComponentsFromScene(Sprite.class);
+            for(Component comp : comps)
+                this.SCENE_SPRITES.add((Sprite) comp);
+
+            this.SCENE_SPRITES = this.SortBasedOnRenderOrder();
+
+        }
+
+        this.AMOUNT_OF_PARTICLE_SYSTEMS_IN_SCENE = Cratos.GetComponentsFromScene(ParticleSystem.class).size();
+        if(this.SCENE_PARTICLE_SYSTEMS.size() != this.AMOUNT_OF_PARTICLE_SYSTEMS_IN_SCENE)
+        {
+            this.SCENE_PARTICLE_SYSTEMS.clear();
+            List<Component> comps = Cratos.GetComponentsFromScene(ParticleSystem.class);
+            for(Component comp : comps)
+                this.SCENE_PARTICLE_SYSTEMS.add((ParticleSystem) comp);
+
+        }
     }
     private Matrix4f GetEntityTransform(Entity entity)
     {

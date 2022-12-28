@@ -25,6 +25,12 @@ public class Cursor extends EngineSystem
         this.Color = Sprite.ConvertColorToGLSL(255.0f, 255.0f, 255.0f, 255.0f);
         this.SetMode(GLFW_CURSOR_NORMAL);
     }
+
+    @Override
+    public void Start() {
+
+    }
+
     public void SetDefaultTexture(int tex) { this.DefaultTexture = tex; }
     public void SetOnLeftClickTexture(int tex) { this.OnLeftClickTexture = tex; }
     public void SetOnRightClickTexture(int tex) { this.OnRightClickTexture = tex; }

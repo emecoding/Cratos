@@ -22,6 +22,12 @@ public class InputManager extends EngineSystem
     @Override
     public void Initialize()
     {
+
+    }
+
+    @Override
+    public void Start()
+    {
         WindowLong = Cratos.CurrentWindow().GetWindowID();
     }
 

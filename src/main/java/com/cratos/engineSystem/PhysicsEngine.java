@@ -22,9 +22,15 @@ public class PhysicsEngine extends EngineSystem
     {
         this.Rigidbodies = new ArrayList<Rigidbody>();
         this.Colliders = new ArrayList<Collider>();
+    }
+
+    @Override
+    public void Start()
+    {
         this.AMOUNT_OF_RIGIDBODIES_IN_SCENE = Cratos.GetComponentsFromScene(Rigidbody.class).size();
         this.AMOUNT_OF_COLLIDERS_IN_SCENE = Cratos.GetComponentsFromScene(Collider.class).size();
     }
+
     public void Simulate()
     {
         this.UpdateRigidbodiesAndCollidersList();

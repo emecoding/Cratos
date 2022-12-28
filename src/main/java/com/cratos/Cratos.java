@@ -24,6 +24,7 @@ public class Cratos
     public static Window CreateWindow(int width, int height, String title)
     {
         m_Window = new Window(width, height, title);
+        m_Window.Init();
         return m_Window;
     }
     public static SceneManager CreateSceneManager()
@@ -126,7 +127,7 @@ public class Cratos
     }
     public static void Run()
     {
-
+        StartEngine();
         while(!m_Window.ShouldClose())
         {
             m_Window.Clear();
@@ -141,10 +142,14 @@ public class Cratos
     {
         if(CratosDebug == null)
             CreateDebug();
-        CratosDebug.Initialize();
 
-        if(m_Window == null) CreateWindow(400, 400, "Cratos");
-        else CratosDebug.Warning("No Current Context Found!");
+        if(m_Window == null)
+            CreateWindow(400, 400, "Cratos");
+
+        EngineResourceManager.InitEngineResources();
+
+        if(CratosSceneManager == null)
+            CreateSceneManager();
 
         if(CratosInputManager == null)
             CreateInputManager();
@@ -152,20 +157,31 @@ public class Cratos
         if(CratosCursor == null)
             CreateCursor();
 
+        if(CratosPhysicsEngine == null)
+            CreatePhysicsEngine();
+
         if(CratosRenderer == null)
             CreateRenderer();
 
-        EngineResourceManager.InitEngineResources();
-
         CratosDebug.Log("Cratos Initialized Successfully!");
+    }
+
+    public static void StartEngine()
+    {
+        CratosDebug.Start();
+        CratosSceneManager.Start();
+        CratosInputManager.Start();
+        CratosCursor.Start();
+        CratosPhysicsEngine.Start();
+        CratosRenderer.Start();
     }
     public static void Terminate()
     {
         CratosDebug.Log("Terminating...");
         CratosSceneManager.Destroy();
         CratosRenderer.Destroy();
-        if(CratosPhysicsEngine != null) CratosPhysicsEngine.Destroy();
-        if(m_Window != null) m_Window.DestroyWindow();
+        CratosPhysicsEngine.Destroy();
+        m_Window.DestroyWindow();
         CratosInputManager.Destroy();
         CratosDebug.Destroy();
         glfwTerminate();

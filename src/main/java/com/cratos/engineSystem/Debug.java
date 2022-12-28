@@ -39,6 +39,11 @@ public class Debug extends EngineSystem
     }
 
     @Override
+    public void Start() {
+
+    }
+
+    @Override
     public void Destroy()
     {
 

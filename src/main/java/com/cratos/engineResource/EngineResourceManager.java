@@ -1,7 +1,7 @@
 package com.cratos.engineResource;
 
 import com.cratos.Cratos;
-import org.lwjgl.opengl.GL11;
+import com.cratos.entity.component.ParticleSystem;
 
 import java.io.InputStream;
 import java.util.*;
@@ -51,6 +51,17 @@ public class EngineResourceManager
         SpriteSheet s = new SpriteSheet(name, path, SpriteWidth, SpriteHeight);
         m_SpriteSheets.add(s);
         return s;
+    }
+    public static SpriteSheet GetSpriteSheet(String name)
+    {
+        for(int i = 0; i < m_SpriteSheets.size(); i++)
+        {
+            if(m_SpriteSheets.get(i).m_Name.equals(name))
+                return m_SpriteSheets.get(i);
+        }
+
+        Cratos.CratosDebug.Error("No sprite sheet found called " + name);
+        return null;
     }
     public static int GetTextureFromSpriteSheet(String name, int x, int y)
     {

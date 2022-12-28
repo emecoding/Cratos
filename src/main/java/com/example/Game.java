@@ -59,14 +59,14 @@ public class Game
 {
     public static void main(String[] args)
     {
-        Window window = Cratos.CreateWindow(1280, 720, "Game");
+        Cratos.CreateWindow(1280, 720, "Game");
         Cratos.InitializeCratos();
 
-        EngineResourceManager.AddSpriteSheet("CURSOR", "/sprites/cursor.png", 32, 32);
+        //EngineResourceManager.AddSpriteSheet("CURSOR", "/sprites/cursor.png", 32, 32);
 
-        SceneManager sceneManager = Cratos.CreateSceneManager();
+        //SceneManager sceneManager = Cratos.CreateSceneManager();
 
-        Scene mainScene = sceneManager.AddScene("Main");
+        Scene mainScene = Cratos.CratosSceneManager.AddScene("Main");
         Entity MainCamera = mainScene.AddEntity("MainCamera");
         MainCamera.AddComponent(new Camera());
 
@@ -78,8 +78,6 @@ public class Game
         sp.Color = Sprite.ConvertColorToGLSL(255.0f, 0.0f, 0.0f, 255.0f);
         player.AddComponent(sp);
 
-        Cratos.CreateRenderer();
-        Cratos.CreatePhysicsEngine();
 
         Cratos.Run();
         Cratos.Terminate();
