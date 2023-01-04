@@ -3,7 +3,7 @@ package com.cratos.entity.component;
 import com.cratos.entity.Entity;
 import org.joml.Vector2f;
 
-public class Collider extends Component
+public class Collider extends BehaviourComponent
 {
     public float Right, Left, Top, Bottom;
     public Vector2f Size;

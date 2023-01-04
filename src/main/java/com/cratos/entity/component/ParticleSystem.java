@@ -1,13 +1,18 @@
 package com.cratos.entity.component;
 
 import com.cratos.Cratos;
+import com.cratos.engineResource.Shader;
+import com.cratos.engineResource.TextureLoader;
 import com.cratos.engineUtils.EngineUtils;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
-public class ParticleSystem extends Component
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.glDrawArrays;
+
+public class ParticleSystem extends RenderComponent
 {
     private int FrameRate = -1;
     private int CurrentFrame = 0;
@@ -28,11 +33,6 @@ public class ParticleSystem extends Component
 
         this.SetPosition(this.ParentEntity.GetPositionVec2());
         this.SetSize(this.ParentEntity.GetSize());
-    }
-    @Override
-    public void Start()
-    {
-
     }
     @Override
     public void Update()
@@ -70,14 +70,19 @@ public class ParticleSystem extends Component
 
                 this.CurrentFrame = 0;
             }
-
-
         }
-
     }
     @Override
-    public void Destroy()
+    public void Render(Shader shader, Matrix4f transform)
     {
+        if(this.GetCurrentFrame() > -1 && this.IsPlaying)
+        {
+            TextureLoader.UseTexture(this.GetCurrentFrame());
+            shader.UploadVec4("Color", this.Color);
+            shader.UploadMat4("Transform", this.GetParticleSystemTransform());
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+            TextureLoader.UnbindEveryTexture();
+        }
 
     }
     public void SetFrames(int[] Frames)

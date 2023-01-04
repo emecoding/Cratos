@@ -3,13 +3,9 @@ package com.cratos.engineSystem;
 import com.cratos.Cratos;
 import com.cratos.engineResource.EngineResourceManager;
 import com.cratos.engineResource.Shader;
-import com.cratos.engineResource.SpriteSheet;
 import com.cratos.engineResource.TextureLoader;
 import com.cratos.entity.Entity;
-import com.cratos.entity.component.Camera;
-import com.cratos.entity.component.Component;
-import com.cratos.entity.component.ParticleSystem;
-import com.cratos.entity.component.Sprite;
+import com.cratos.entity.component.*;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -31,22 +27,18 @@ public class Renderer extends EngineSystem
     protected Shader SpriteShader = null;
     protected int VAO;
     protected int VBO;
-    protected int AMOUNT_OF_SPRITES_IN_SCENE = 0;
-    protected int AMOUNT_OF_PARTICLE_SYSTEMS_IN_SCENE = 0;
-    protected List<Sprite> SCENE_SPRITES = null;
-    protected List<ParticleSystem> SCENE_PARTICLE_SYSTEMS = null;
+    protected List<RenderComponent> SCENE_RENDER_COMPONENTS = null;
     @Override
     public void Initialize()
     {
         this.SpriteShader = EngineResourceManager.GetShader("SPRITE");
-        this.SCENE_SPRITES = new ArrayList<Sprite>();
-        this.SCENE_PARTICLE_SYSTEMS = new ArrayList<ParticleSystem>();
+        /*this.SCENE_SPRITES = new ArrayList<Sprite>();
+        this.SCENE_PARTICLE_SYSTEMS = new ArrayList<ParticleSystem>();*/
+        this.SCENE_RENDER_COMPONENTS = new ArrayList<RenderComponent>();
     }
     @Override
     public void Start()
     {
-        this.AMOUNT_OF_SPRITES_IN_SCENE = Cratos.GetComponentsFromScene(Sprite.class).size();
-        this.AMOUNT_OF_PARTICLE_SYSTEMS_IN_SCENE = Cratos.GetComponentsFromScene(SpriteSheet.class).size();
         float vertices[] = new float[]{
                 // pos      // tex
                 0.0f, 1.0f, 0.0f, 1.0f,
@@ -84,35 +76,16 @@ public class Renderer extends EngineSystem
         {
             Cratos.CratosDebug.Error(e.getMessage());
         }
+
+        this.UpdateRenderComponents();
     }
     @Override
     public void Destroy()
     {
 
     }
-    public void RenderEntity(Entity entity)
-    {
-        if(!ShouldRender(entity))
-            return;
-
-        Shader.UnbindEveryShader();
-        Camera cam = (Camera)Objects.requireNonNull(Cratos.GetComponentFromScene(Camera.class));
-        Sprite sprite = (Sprite)entity.GetComponent(Sprite.class);
-        this.SpriteShader.Use();
-        if(sprite.Texture > -1) TextureLoader.UseTexture(sprite.Texture);
-        this.SpriteShader.UploadVec4("Color", sprite.Color);
-        this.SpriteShader.UploadMat4("transform", GetEntityTransform(entity));
-        this.SpriteShader.UploadMat4("view", cam.View);
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-        glBindVertexArray(0);
-        TextureLoader.UnbindEveryTexture();
-        Shader.UnbindEveryShader();
-    }
     public void RenderCurrentScene()
     {
-        this.GetEveryRenderComponent();
-
         Shader.UnbindEveryShader();
         Camera cam = (Camera)Objects.requireNonNull(Cratos.GetComponentFromScene(Camera.class));
 
@@ -120,7 +93,15 @@ public class Renderer extends EngineSystem
         this.SpriteShader.UploadMat4("View", cam.View);
         glBindVertexArray(VAO);
 
-        for (Sprite sprite : this.SCENE_SPRITES)
+        for(RenderComponent component : this.SCENE_RENDER_COMPONENTS)
+        {
+            if(!ShouldRender(component.ParentEntity))
+                continue;
+
+            component.Render(this.SpriteShader, GetEntityTransform(component.ParentEntity));
+        }
+
+        /*for (Sprite sprite : this.SCENE_SPRITES)
         {
             if(!ShouldRender(sprite.ParentEntity))
                 continue;
@@ -146,7 +127,7 @@ public class Renderer extends EngineSystem
             glDrawArrays(GL_TRIANGLES, 0, 6);
             TextureLoader.UnbindEveryTexture();
 
-        }
+        }*/
 
         if(Cratos.CratosCursor.GetCurrentTexture() != -1)
         {
@@ -160,9 +141,9 @@ public class Renderer extends EngineSystem
         glBindVertexArray(0);
         Shader.UnbindEveryShader();
     }
-    private void GetEveryRenderComponent()
+    public void UpdateRenderComponents()
     {
-        this.AMOUNT_OF_SPRITES_IN_SCENE = Cratos.GetComponentsFromScene(Sprite.class).size();
+        /*this.AMOUNT_OF_SPRITES_IN_SCENE = Cratos.GetComponentsFromScene(Sprite.class).size();
         if(this.SCENE_SPRITES.size() != this.AMOUNT_OF_SPRITES_IN_SCENE)
         {
             this.SCENE_SPRITES.clear();
@@ -182,7 +163,19 @@ public class Renderer extends EngineSystem
             for(Component comp : comps)
                 this.SCENE_PARTICLE_SYSTEMS.add((ParticleSystem) comp);
 
+        }*/
+
+        this.SCENE_RENDER_COMPONENTS.clear();
+        for(Entity entity : Cratos.CratosSceneManager.GetCurrentScene().GetEveryEntity())
+        {
+            for(Component component : entity.GetEveryComponent())
+            {
+                if(component.GetComponentType().equals(ComponentType.RENDER_COMPONENT))
+                    this.SCENE_RENDER_COMPONENTS.add((RenderComponent) component);
+            }
         }
+
+        this.SCENE_RENDER_COMPONENTS = this.SortBasedOnRenderOrder();
     }
     private Matrix4f GetEntityTransform(Entity entity)
     {
@@ -198,32 +191,33 @@ public class Renderer extends EngineSystem
         transform.scale(new Vector3f(Size.x, Size.y, 1.0f));
         return transform;
     }
-    private List<Sprite> SortBasedOnRenderOrder()
+    private List<RenderComponent> SortBasedOnRenderOrder()
     {
-        List<Sprite> sprites = new ArrayList<Sprite>();
+        List<RenderComponent> RenderComponents = new ArrayList<RenderComponent>();
 
-        for(int i = 0; i < this.SCENE_SPRITES.size(); i++)
+        for(int i = 0; i < this.SCENE_RENDER_COMPONENTS.size(); i++)
         {
-            Sprite CurrentSprite = this.SCENE_SPRITES.get(i);
+
+            RenderComponent CurrentComponent = this.SCENE_RENDER_COMPONENTS.get(i);
 
             if(i == 0)
             {
-                sprites.add(CurrentSprite);
+                RenderComponents.add(CurrentComponent);
                 continue;
             }
 
-            if(CurrentSprite.RenderOrder > this.SCENE_SPRITES.get(i-1).RenderOrder)
+            if(CurrentComponent.GetRenderOrder() > this.SCENE_RENDER_COMPONENTS.get(i-1).GetRenderOrder())
             {
-                sprites.add(CurrentSprite);
+                RenderComponents.add(CurrentComponent);
             }
             else
             {
-                sprites.add(i-1, CurrentSprite);
+                RenderComponents.add(i-1, CurrentComponent);
             }
 
         }
 
-        return sprites;
+        return RenderComponents;
     }
     private boolean ShouldRender(Entity entity)
     {

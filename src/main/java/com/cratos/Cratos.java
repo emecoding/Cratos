@@ -10,6 +10,7 @@ import com.cratos.window.Window;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import static org.lwjgl.glfw.GLFW.glfwTerminate;
 
 public class Cratos

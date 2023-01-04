@@ -4,25 +4,21 @@ import com.cratos.engineResource.Scene;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 public class SceneManager extends EngineSystem
 {
     protected List<Scene> SCENES = null;
     protected int CurrentSceneIndex = 0;
-
     @Override
     public void Initialize()
     {
         SCENES = new ArrayList<Scene>();
     }
-
     @Override
     public void Start()
     {
 
     }
-
     public Scene AddScene(String name)
     {
         Scene s = new Scene(name);
@@ -74,6 +70,7 @@ public class SceneManager extends EngineSystem
             if(this.SCENES.get(i).m_Name.equals(name))
             {
                 this.CurrentSceneIndex = i;
+                Cratos.CratosRenderer.UpdateRenderComponents();
                 return;
             }
         }
@@ -85,6 +82,7 @@ public class SceneManager extends EngineSystem
             if(this.SCENES.get(i).equals(scene))
             {
                 this.CurrentSceneIndex = i;
+                Cratos.CratosRenderer.UpdateRenderComponents();
                 return;
             }
         }
@@ -95,6 +93,7 @@ public class SceneManager extends EngineSystem
             Cratos.CratosDebug.Error("Invalid scene index set: " + scene);
 
         this.CurrentSceneIndex = scene;
+        Cratos.CratosRenderer.UpdateRenderComponents();
 
     }
     public void RemoveScene(String name)

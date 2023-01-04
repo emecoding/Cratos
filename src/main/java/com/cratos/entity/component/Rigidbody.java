@@ -2,7 +2,7 @@ package com.cratos.entity.component;
 
 import org.joml.Vector2f;
 
-public class Rigidbody extends Component
+public class Rigidbody extends BehaviourComponent
 {
     public Vector2f Velocity;
     public float Mass;

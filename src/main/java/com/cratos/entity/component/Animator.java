@@ -3,7 +3,7 @@ package com.cratos.entity.component;
 import com.cratos.Cratos;
 import com.cratos.engineUtils.EngineUtils;
 
-public class Animator extends Component
+public class Animator extends BehaviourComponent
 {
     private Sprite m_Sprite;
     private int CurrentFrame = -1;
@@ -16,17 +16,17 @@ public class Animator extends Component
     @Override
     public void Initialize()
     {
-
-    }
-
-    @Override
-    public void Start()
-    {
         this.m_Sprite = (Sprite) this.ParentEntity.GetComponent(Sprite.class);
         if(this.m_Sprite == null)
             Cratos.CratosDebug.Error("No sprite component found from " + this.ParentEntity.Name);
 
         this.CurrentFrame = 0;
+    }
+
+    @Override
+    public void Start()
+    {
+
     }
 
     @Override

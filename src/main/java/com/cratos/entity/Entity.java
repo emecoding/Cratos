@@ -60,6 +60,7 @@ public class Entity
         this.Components.add(comp);
         comp.SetParent(this);
         comp.Initialize();
+        Cratos.CratosRenderer.UpdateRenderComponents();
         return comp;
     }
     public Component GetComponent(Class<?> type)

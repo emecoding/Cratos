@@ -1,16 +1,12 @@
 package com.example;
 
 import com.cratos.Cratos;
-import com.cratos.engineResource.EngineResourceManager;
 import com.cratos.engineResource.Scene;
-import com.cratos.engineSystem.SceneManager;
 import com.cratos.entity.Entity;
 import com.cratos.entity.component.Camera;
 import com.cratos.entity.component.Rigidbody;
 import com.cratos.entity.component.Sprite;
-import com.cratos.window.Window;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_UP;
 
 
 /*
@@ -62,22 +58,16 @@ public class Game
         Cratos.CreateWindow(1280, 720, "Game");
         Cratos.InitializeCratos();
 
-        //EngineResourceManager.AddSpriteSheet("CURSOR", "/sprites/cursor.png", 32, 32);
-
-        //SceneManager sceneManager = Cratos.CreateSceneManager();
-
         Scene mainScene = Cratos.CratosSceneManager.AddScene("Main");
         Entity MainCamera = mainScene.AddEntity("MainCamera");
         MainCamera.AddComponent(new Camera());
 
         Entity player = mainScene.AddEntity();
-        player.SetX(100.0f);
+        player.SetX(500.0f);
         player.AddComponent(new Rigidbody());
 
-        Sprite sp = new Sprite();
+        Sprite sp = (Sprite) player.AddComponent(new Sprite());
         sp.Color = Sprite.ConvertColorToGLSL(255.0f, 0.0f, 0.0f, 255.0f);
-        player.AddComponent(sp);
-
 
         Cratos.Run();
         Cratos.Terminate();

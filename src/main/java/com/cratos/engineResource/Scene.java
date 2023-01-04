@@ -16,7 +16,6 @@ public class Scene extends EngineResource
         super(name);
         this.ENTITIES = new ArrayList<Entity>();
     }
-
     public List<Entity> GetEveryEntity() { return this.ENTITIES; }
     public Entity AddEntity()
     {
@@ -73,6 +72,7 @@ public class Scene extends EngineResource
         {
             this.ENTITIES.remove(entity);
             entity.Destroy();
+            Cratos.CratosRenderer.UpdateRenderComponents();
         }
 
     }

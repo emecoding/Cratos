@@ -5,7 +5,7 @@ import com.cratos.window.Window;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-public class Camera extends Component
+public class Camera extends BehaviourComponent
 {
     public Matrix4f Projection = null;
     public Matrix4f View = null;
