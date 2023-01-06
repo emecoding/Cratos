@@ -2,6 +2,8 @@ package com.cratos.engineResource;
 import java.nio.ByteBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
 import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 
 public class TextureLoader
@@ -40,7 +42,11 @@ public class TextureLoader
 
         return -1;
     }
-    public static void UseTexture(int tex) { glBindTexture(GL_TEXTURE_2D, tex); }
+    public static void UseTexture(int tex)
+    {
+        //glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, tex);
+    }
     public static void UnbindEveryTexture() { glBindTexture(GL_TEXTURE_2D, 0); }
     public static void DestroyTexture(int tex) { glDeleteTextures(tex); }
 }

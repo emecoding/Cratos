@@ -3,6 +3,7 @@ package com.cratos.window;
 import com.cratos.Cratos;
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryUtil;
@@ -98,6 +99,12 @@ public class Window
         this.SkyboxColor[1] = g/255;
         this.SkyboxColor[2] = b/255;
         this.SkyboxColor[3] = a/255;
+    }
+    public void Center()
+    {
+        long monitor = glfwGetPrimaryMonitor();
+        GLFWVidMode mode = glfwGetVideoMode(monitor);
+        glfwSetWindowPos(this.m_Window,mode.width()/2-this.Width/2, mode.height()/2-this.Height/2);
     }
     public long GetWindowID() { return m_Window; }
 }

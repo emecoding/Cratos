@@ -21,7 +21,14 @@ public class Camera extends BehaviourComponent
         this.View = new Matrix4f();
     }
 
-
+    public Matrix4f GetTextProjection()
+    {
+        Window CurrentWindow = Cratos.CurrentWindow();
+        Matrix4f proj = new Matrix4f();
+        proj.identity();
+        proj.ortho(0, CurrentWindow.Width, 0, CurrentWindow.Height, 1f, 100f);
+        return proj;
+    }
     @Override
     public void Start()
     {

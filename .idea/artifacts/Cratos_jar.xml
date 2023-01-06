@@ -21,6 +21,8 @@
       <element id="directory" name="shaders">
         <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/shaders/SpriteFs.glsl" />
         <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/shaders/SpriteVs.glsl" />
+        <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/shaders/TextFs.glsl" />
+        <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/shaders/TextVs.glsl" />
       </element>
       <element id="directory" name="sprites">
         <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/sprites/pumpkin.png" />

@@ -109,7 +109,6 @@ public class Shader extends EngineResource
     }
     public void UploadTexture(String varName, int slot) {
         int varLocation = glGetUniformLocation(programId, varName);
-        Use();
         glUniform1i(varLocation, slot);
     }
     public void UploadBool(String name, boolean bool)

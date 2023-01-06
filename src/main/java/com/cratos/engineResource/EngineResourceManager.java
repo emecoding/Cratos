@@ -10,14 +10,17 @@ public class EngineResourceManager
 {
     private static List<Shader> m_EngineShaders;
     private static List<SpriteSheet> m_SpriteSheets;
+    private static List<CFont> m_Fonts;
     private static HashMap<String, Integer> m_Textures;
     public static void InitEngineResources()
     {
         m_EngineShaders = new ArrayList<Shader>();
         m_SpriteSheets = new ArrayList<SpriteSheet>();
+        m_Fonts = new ArrayList<CFont>();
         m_Textures = new HashMap<String, Integer>();
 
         AddShader("SPRITE", "/shaders/SpriteVs.glsl", "/shaders/SpriteFs.glsl");
+        AddShader("TEXT", "/shaders/TextVs.glsl", "/shaders/TextFs.glsl");
 
         AddTexture("PUMPKIN", "/sprites/pumpkin.png");
         AddTexture("TOILET", "/sprites/toilet.png");
@@ -45,6 +48,25 @@ public class EngineResourceManager
     public static void AddTexture(String name, String path)
     {
         m_Textures.put(name, TextureLoader.LoadTexture(path));
+    }
+    public static CFont AddFont(String name, String filepath, int size)
+    {
+        CFont f = new CFont(name);
+        f.SetFilePath(filepath);
+        f.SetFontSize(size);
+        f.Initialize();
+        m_Fonts.add(f);
+        return f;
+    }
+    public static CFont GetFont(String name)
+    {
+        for(CFont font : m_Fonts)
+        {
+            if(font.m_Name.equals(name))
+                return font;
+        }
+
+        return null;
     }
     public static SpriteSheet AddSpriteSheet(String name, String path, int SpriteWidth, int SpriteHeight)
     {

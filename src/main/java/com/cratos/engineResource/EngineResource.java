@@ -7,6 +7,5 @@ public abstract class EngineResource
     {
         m_Name = name;
     }
-
     public abstract void Destroy();
 }
