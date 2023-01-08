@@ -9,19 +9,24 @@ import org.joml.Vector3f;
 public class Text extends RenderComponent
 {
     private String Content = "";
-    private float Size = 10f;
+    private float Size = 1f;
     private Vector3f Color = null;
     public void SetContent(String c) { this.Content = c; }
     public void SetColor(Vector3f Color) { this.Color = Color; }
     public void  SetSize(int size) { this.Size = size; }
     public String GetContent() { return this.Content; }
+
+    public Text()
+    {
+        super("TEXT");
+    }
     @Override
     public void Initialize()
     {
 
     }
     @Override
-    public void Render(Shader shader, Matrix4f transform)
+    public void Render()
     {
         if(this.Content.equals(""))
             return;

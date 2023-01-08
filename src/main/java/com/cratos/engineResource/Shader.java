@@ -1,6 +1,5 @@
 package com.cratos.engineResource;
 
-import com.cratos.Cratos;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -9,8 +8,6 @@ import org.lwjgl.system.MemoryStack;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.FloatBuffer;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Scanner;
 
 import static org.lwjgl.opengl.GL20.*;

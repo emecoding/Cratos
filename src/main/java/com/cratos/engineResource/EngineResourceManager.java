@@ -1,7 +1,6 @@
 package com.cratos.engineResource;
 
 import com.cratos.Cratos;
-import com.cratos.entity.component.ParticleSystem;
 
 import java.io.InputStream;
 import java.util.*;
@@ -21,6 +20,7 @@ public class EngineResourceManager
 
         AddShader("SPRITE", "/shaders/SpriteVs.glsl", "/shaders/SpriteFs.glsl");
         AddShader("TEXT", "/shaders/TextVs.glsl", "/shaders/TextFs.glsl");
+        AddShader("RECTANGLE", "/shaders/RectangleVs.glsl", "/shaders/RectangleFs.glsl");
 
         AddTexture("PUMPKIN", "/sprites/pumpkin.png");
         AddTexture("TOILET", "/sprites/toilet.png");
@@ -38,12 +38,13 @@ public class EngineResourceManager
         Cratos.CratosDebug.Error("Failed to find shader named " + name);
         return null;
     }
-    public static void AddShader(String name, String vertexPath, String fragmentPath)
+    public static Shader AddShader(String name, String vertexPath, String fragmentPath)
     {
         InputStream Vertex = EngineResourceManager.class.getResourceAsStream(vertexPath);
         InputStream Fragment = EngineResourceManager.class.getResourceAsStream(fragmentPath);
-
-        m_EngineShaders.add(new Shader(name, Vertex, Fragment));
+        Shader s = new Shader(name, Vertex, Fragment);
+        m_EngineShaders.add(s);
+        return s;
     }
     public static void AddTexture(String name, String path)
     {
@@ -109,4 +110,5 @@ public class EngineResourceManager
         Cratos.CratosDebug.Error("Failed to find texture named " + name);
         return -1;
     }
+    public static List<Shader> GetEveryShader() { return m_EngineShaders; }
 }

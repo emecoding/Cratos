@@ -24,6 +24,11 @@ public class ParticleSystem extends RenderComponent
     private Vector2f Size;
     private boolean IsPlaying = false;
     private boolean IsLoop = false;
+
+    public ParticleSystem()
+    {
+        super("SPRITE");
+    }
     @Override
     public void Initialize()
     {
@@ -73,13 +78,15 @@ public class ParticleSystem extends RenderComponent
         }
     }
     @Override
-    public void Render(Shader shader, Matrix4f transform)
+    public void Render()
     {
         if(this.GetCurrentFrame() > -1 && this.IsPlaying)
         {
+            Shader.UnbindEveryShader();
+            m_Shader.Use();
             TextureLoader.UseTexture(this.GetCurrentFrame());
-            shader.UploadVec4("Color", this.Color);
-            shader.UploadMat4("Transform", this.GetParticleSystemTransform());
+            m_Shader.UploadVec4("Color", this.Color);
+            m_Shader.UploadMat4("Transform", this.GetParticleSystemTransform());
             glDrawArrays(GL_TRIANGLES, 0, 6);
             TextureLoader.UnbindEveryTexture();
         }

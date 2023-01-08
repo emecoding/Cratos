@@ -5,7 +5,6 @@ import com.cratos.engineResource.*;
 import com.cratos.entity.Entity;
 import com.cratos.entity.component.*;
 import org.joml.Matrix4f;
-import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 
@@ -80,16 +79,13 @@ public class Renderer extends EngineSystem
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glBindVertexArray(0);
 
-        try
+        List<Shader> shaders = EngineResourceManager.GetEveryShader();
+        for(int i = 0; i < shaders.size(); i++)
         {
-            this.SpriteShader.Use();
-            Camera MainCamera = (Camera)Cratos.GetComponentFromScene(Camera.class);
-            this.SpriteShader.UploadMat4("Projection", MainCamera.Projection);
+            shaders.get(i).Use();
+            shaders.get(i).UploadMat4("Projection", RenderComponent.GetMainCameraProjection());
+            shaders.get(i).UploadMat4("View", RenderComponent.GetMainCameraView());
             Shader.UnbindEveryShader();
-        }
-        catch (NullPointerException e)
-        {
-            Cratos.CratosDebug.Error(e.getMessage());
         }
     }
     private void InitializeTextRendering()
@@ -155,16 +151,15 @@ public class Renderer extends EngineSystem
 
         this.SpriteShader.Use();
         this.SpriteShader.UploadMat4("View", cam.View);
+        Shader.UnbindEveryShader();
         glBindVertexArray(this.SPRITE_VAO);
-        //glBindBuffer(GL_ARRAY_BUFFER, this.SPRITE_VBO);
-
 
         for(RenderComponent component : this.SCENE_RENDER_COMPONENTS)
         {
             if(!ShouldRender(component.ParentEntity))
                 continue;
 
-            component.Render(this.SpriteShader, GetEntityTransform(component.ParentEntity));
+            component.Render();
         }
 
         if(Cratos.CratosCursor.GetCurrentTexture() != -1)
@@ -220,7 +215,6 @@ public class Renderer extends EngineSystem
         Shader.UnbindEveryShader();
 
         this.TextShader.Use();
-        //glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_BUFFER, this.TextFont.textureId);
         this.TextShader.UploadTexture("uFontTexture", 0);
         this.TextShader.UploadMat4("uProjection", this.TextProjection);
@@ -232,25 +226,10 @@ public class Renderer extends EngineSystem
         glBindVertexArray(0);
         Shader.UnbindEveryShader();
 
-        this.SpriteShader.Use();
         glBindVertexArray(this.SPRITE_VAO);
 
         this.CurrentTextSize = 0;
         this.TextVertices = new float[TEXT_BATCH_SIZE * TEXT_VERTEX_SIZE];
-    }
-    private Matrix4f GetEntityTransform(Entity entity)
-    {
-        return GetTransform(entity.GetPosition(), entity.GetSize(), entity.GetRotation());
-    }
-    private Matrix4f GetTransform(Vector3f Position, Vector2f Size, float Rotation)
-    {
-        Matrix4f transform = new Matrix4f();
-        transform.translate(new Vector3f(Position.x, Position.y, Position.z));
-        transform.translate(new Vector3f(0.5f * Size.x, 0.5f * Size.y, Position.z));
-        transform.rotate(Rotation, new Vector3f(0.0f, 0.0f, 1.0f));
-        transform.translate(new Vector3f(-0.5f * Size.x, -0.5f * Size.y, Position.z));
-        transform.scale(new Vector3f(Size.x, Size.y, 1.0f));
-        return transform;
     }
     private List<RenderComponent> SortBasedOnRenderOrder()
     {

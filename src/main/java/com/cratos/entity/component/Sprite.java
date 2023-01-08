@@ -2,7 +2,10 @@ package com.cratos.entity.component;
 
 import com.cratos.engineResource.Shader;
 import com.cratos.engineResource.TextureLoader;
+import com.cratos.entity.Entity;
 import org.joml.Matrix4f;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
@@ -12,6 +15,10 @@ public class Sprite extends RenderComponent
 {
     public Vector4f Color = new Vector4f();
     public int Texture = -1;
+    public Sprite()
+    {
+        super("SPRITE");
+    }
     @Override
     public void Initialize()
     {
@@ -19,11 +26,13 @@ public class Sprite extends RenderComponent
         this.Color = Sprite.ConvertColorToGLSL(255.0f, 255.0f, 255.0f, 255.0f);
     }
     @Override
-    public void Render(Shader shader, Matrix4f transform)
+    public void Render()
     {
         if(this.Texture > -1) TextureLoader.UseTexture(this.Texture);
-        shader.UploadVec4("Color", this.Color);
-        shader.UploadMat4("Transform", transform);
+        Shader.UnbindEveryShader();
+        m_Shader.Use();
+        m_Shader.UploadVec4("Color", this.Color);
+        m_Shader.UploadMat4("Transform", this.GetEntityTransform(this.ParentEntity));
         glDrawArrays(GL_TRIANGLES, 0, 6);
         TextureLoader.UnbindEveryTexture();
     }
@@ -39,4 +48,19 @@ public class Sprite extends RenderComponent
     {
         return new Vector4f(r/255, g/255, b/255, a/255);
     }
+    private Matrix4f GetEntityTransform(Entity entity)
+    {
+        return GetTransform(entity.GetPosition(), entity.GetSize(), entity.GetRotation());
+    }
+    private Matrix4f GetTransform(Vector3f Position, Vector2f Size, float Rotation)
+    {
+        Matrix4f transform = new Matrix4f();
+        transform.translate(new Vector3f(Position.x, Position.y, Position.z));
+        transform.translate(new Vector3f(0.5f * Size.x, 0.5f * Size.y, Position.z));
+        transform.rotate(Rotation, new Vector3f(0.0f, 0.0f, 1.0f));
+        transform.translate(new Vector3f(-0.5f * Size.x, -0.5f * Size.y, Position.z));
+        transform.scale(new Vector3f(Size.x, Size.y, 1.0f));
+        return transform;
+    }
+
 }

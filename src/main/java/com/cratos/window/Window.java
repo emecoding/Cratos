@@ -64,6 +64,9 @@ public class Window
         glfwShowWindow(m_Window);
 
         GL.createCapabilities();
+        glEnable(GL_BLEND);
+
+
     }
     public void Clear()
     {
