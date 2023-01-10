@@ -73,12 +73,26 @@ public class Entity
 
         return null;
     }
+    public boolean HasComponent(Class<?> type)
+    {
+        for(int i = 0; i < this.Components.size(); i++)
+        {
+            if(this.Components.get(i).getClass() == type)
+                return true;
+        }
+
+        return false;
+    }
     public void RemoveComponent(Class<?> type)
     {
         for(int i = 0; i < this.Components.size(); i++)
         {
             if(this.Components.get(i).getClass() == type)
+            {
                 this.Components.remove(this.Components.get(i));
+                return;
+            }
+
         }
     }
     public Vector3f GetPosition() { return this.Position; }

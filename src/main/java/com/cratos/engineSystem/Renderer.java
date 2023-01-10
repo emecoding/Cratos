@@ -107,11 +107,9 @@ public class Renderer extends EngineSystem
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 
         this.TEXT_VAO = glGenVertexArrays();
-        Cratos.CratosDebug.Log("SPRITE VAO: " + this.SPRITE_VAO + ", TEXT_VAO: " + this.TEXT_VAO);
         glBindVertexArray(this.TEXT_VAO);
 
         this.TEXT_VBO = glGenBuffers();
-        Cratos.CratosDebug.Log("SPRITE VBO: " + this.SPRITE_VBO + ", TEXT_VBO: " + this.TEXT_VBO);
         glBindBuffer(GL_ARRAY_BUFFER, this.TEXT_VBO);
         glBufferData(GL_ARRAY_BUFFER, Float.BYTES*this.TEXT_VERTEX_SIZE*this.TEXT_BATCH_SIZE, GL_DYNAMIC_DRAW);
 
@@ -343,4 +341,7 @@ public class Renderer extends EngineSystem
         FlushTextFromRenderer();
     }
     public void SetFont(CFont font) { this.TextFont = font; }
+    public void BindSpriteVAO() { glBindVertexArray(this.SPRITE_VAO); }
+    public void UnbindEveryVAO() { glBindVertexArray(0); }
+    public int GetCurrentFontSize() { return this.TextFont.GetFontSize(); }
 }

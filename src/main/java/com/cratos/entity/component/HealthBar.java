@@ -48,7 +48,7 @@ public class HealthBar extends RenderComponent
         m_Shader.UploadMat4("Transform", GetTransform(this.ParentEntity.GetPosition(), new Vector2f(Width, Height)));
         glDrawArrays(GL_TRIANGLES, 0, 6);
         m_Shader.UploadVec4("Color", this.FillColor);
-        m_Shader.UploadMat4("Transform", GetTransform(this.ParentEntity.GetPosition(), new Vector2f(Width+(Width-Width/this.Value), Height)));
+        m_Shader.UploadMat4("Transform", GetTransform(this.ParentEntity.GetPosition(), new Vector2f((this.Value/1.0f) * this.Width, Height)));
         glDrawArrays(GL_TRIANGLES, 0, 6);
     }
     public void SetValue(float val)
@@ -60,6 +60,7 @@ public class HealthBar extends RenderComponent
 
         this.Value = val;
     }
+    public float GetValue() { return this.Value; }
     public void BasicHealthBarFunction() { this.BasicHealthBarFunctioning = true; }
     private Matrix4f GetTransform(Vector3f Position, Vector2f Size)
     {

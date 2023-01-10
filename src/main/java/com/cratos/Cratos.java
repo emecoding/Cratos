@@ -22,6 +22,7 @@ public class Cratos
     public static PhysicsEngine CratosPhysicsEngine = null;
     public static InputManager CratosInputManager = null;
     public static Cursor CratosCursor = null;
+    public static UIManager CratosUIManager = null;
     public static Window CreateWindow(int width, int height, String title)
     {
         m_Window = new Window(width, height, title);
@@ -100,6 +101,18 @@ public class Cratos
         CratosDebug.Initialize();
         return CratosDebug;
     }
+    public static UIManager CreateUIManager()
+    {
+        CratosUIManager = new UIManager();
+        CratosUIManager.Initialize();
+        return CratosUIManager;
+    }
+    public static UIManager CreateUIManager(UIManager manager)
+    {
+        CratosUIManager = manager;
+        CratosUIManager.Initialize();
+        return manager;
+    }
     public static void InitializeCratos()
     {
         if(CratosDebug == null)
@@ -125,6 +138,9 @@ public class Cratos
         if(CratosRenderer == null)
             CreateRenderer();
 
+        if(CratosUIManager == null)
+            CreateUIManager();
+
         CratosDebug.Log("Cratos Initialized Successfully!");
     }
     public static void CallStarts()
@@ -147,6 +163,7 @@ public class Cratos
         CratosCursor.Start();
         CratosPhysicsEngine.Start();
         CratosRenderer.Start();
+        CratosUIManager.Start();
         CallStarts();
     }
     public static void Run()
@@ -156,8 +173,9 @@ public class Cratos
         {
             m_Window.Clear();
             CratosCursor.Update();
-            if(CratosPhysicsEngine != null) CratosPhysicsEngine.Simulate();
+            CratosPhysicsEngine.Simulate();
             CratosRenderer.RenderCurrentScene();
+            CratosUIManager.Manage();
             Cratos.Update();
             m_Window.SwapBuffersAndPollEvents();
         }
@@ -185,6 +203,7 @@ public class Cratos
         m_Window.DestroyWindow();
         CratosInputManager.Destroy();
         CratosDebug.Destroy();
+        CratosUIManager.Destroy();
         glfwTerminate();
     }
     public static void Terminate(int state)

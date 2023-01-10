@@ -4,13 +4,12 @@ import com.cratos.Cratos;
 import com.cratos.engineResource.CFont;
 import com.cratos.engineResource.EngineResourceManager;
 import com.cratos.engineResource.Scene;
-import com.cratos.engineResource.Shader;
 import com.cratos.entity.Entity;
-import com.cratos.entity.component.Camera;
-import com.cratos.entity.component.HealthBar;
-import com.cratos.entity.component.Sprite;
-import com.cratos.entity.component.Text;
+import com.cratos.entity.component.*;
+import com.cratos.uiComponent.Button;
 import com.cratos.window.Window;
+
+import java.util.concurrent.Callable;
 
 public class Game
 {
@@ -41,7 +40,36 @@ public class Game
         HealthBar bar = (HealthBar) player.AddComponent(new HealthBar());
         bar.BasicHealthBarFunction();
 
-        Shader.UnbindEveryShader();
+
+        Button comp = (Button) Cratos.CratosUIManager.AddComponent(new Button());
+        comp.SetContent("Click Me!");
+        comp.SetX(0.0f);
+        comp.SetY(0.0f);
+        comp.SetWidth(120.0f);
+        comp.SetHeight(200.0f);
+        comp.SetColor(Sprite.ConvertColorToGLSL(255.0f, 0.0f, 0.0f, 255.0f));
+
+        comp.SetOnLeftClick(new Callable<Integer>()
+        {
+            @Override
+            public Integer call() throws Exception
+            {
+                comp.SetContent("Left Clicked!");
+                comp.SetColor(Sprite.ConvertColorToGLSL(0.0f, 255.0f, 0.0f, 255.0f));
+                return 0;
+            }
+        });
+
+        comp.SetOnRightClick(new Callable<Integer>()
+        {
+            @Override
+            public Integer call() throws Exception
+            {
+                comp.SetContent("Right Clicked!");
+                comp.SetColor(Sprite.ConvertColorToGLSL(255.0f, 0.0f, 0.0f, 255.0f));
+                return 0;
+            }
+        });
 
         Cratos.Run();
         Cratos.Terminate();

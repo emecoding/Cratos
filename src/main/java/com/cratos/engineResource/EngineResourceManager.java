@@ -1,9 +1,14 @@
 package com.cratos.engineResource;
 
 import com.cratos.Cratos;
+import org.lwjgl.BufferUtils;
 
 import java.io.InputStream;
+import java.nio.IntBuffer;
 import java.util.*;
+
+import static org.lwjgl.opengl.GL11.glGetIntegerv;
+import static org.lwjgl.opengl.GL20.GL_CURRENT_PROGRAM;
 
 public class EngineResourceManager
 {

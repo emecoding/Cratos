@@ -44,21 +44,13 @@ public class Window
         if(m_Window == MemoryUtil.NULL)
             throw new IllegalStateException("Failed to create window...");
 
-        glfwSetWindowSizeCallback(m_Window, new GLFWWindowSizeCallback()
-        {
-            @Override
-            public void invoke(long window, int width, int height)
-            {
-                Cratos.CurrentWindow().Width = width;
-                Cratos.CurrentWindow().Height = height;
-            }
-        });
 
         glfwSetKeyCallback(m_Window, (window, key, scancode, action, mods) -> {
             if(key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
                 this.SetCloseTrue();
         });
 
+        glfwSetWindowAttrib(m_Window, GLFW_RESIZABLE, GLFW_FALSE);
         glfwMakeContextCurrent(m_Window);
         glfwSwapInterval(1);
         glfwShowWindow(m_Window);

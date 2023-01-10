@@ -135,4 +135,6 @@ public class CFont extends EngineResource
     {
 
     }
+
+    public int GetFontSize() { return this.fontSize; }
 }
